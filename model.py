@@ -11,8 +11,9 @@ class network(nn.Module):
     def __init__(self, inputSize, outputSize):
         super(network,self).__init__()
         #This is a 1 layer network
-        self.fc1 = nn.Linear(inputSize, 100)
-        self.fc2 = nn.Linear(100,outputSize)
+        #input layer has inputSize nodes, first hidden layer has 50 nodes, output layer has outputSize nodes
+        self.fc1 = nn.Linear(inputSize, 50)
+        self.fc2 = nn.Linear(50,outputSize)
         
     def forward(self, x):
         x = self.fc1(x)
@@ -29,7 +30,7 @@ def run():
     numClasses = 10
     learningRate = 0.001
     batchSize = 64 #Batch size fed through the neuro network
-    numEpoch = 1 #Number of iterations through the neuro network
+    numEpoch = 3 #Number of iterations through the neuro network
 
     #Loading training data
     trainDataset = datasets.MNIST(root='dataset/', train=True, transform=transforms.ToTensor(), download = True)
@@ -39,7 +40,7 @@ def run():
     testDataset = datasets.MNIST(root='dataset/', train=False, transform=transforms.ToTensor(), download = True)
     testLoader = DataLoader(dataset = testDataset, batch_size = batchSize, shuffle = True)
 
-    #Initializing network
+    #Initializing network to device
     model = network(inputSize = inputSize, outputSize = numClasses).to(device)
 
     #Loss and optimizer
@@ -52,7 +53,7 @@ def run():
             #Puts data into GPU
             data = data.to(device = device)
             target = target.to(device = device)
-            
+    
             #Reshaping data
             data = data.reshape(data.shape[0],-1)
             
