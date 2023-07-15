@@ -15,7 +15,7 @@ model.eval() #sets model to evaluation mode
 #Evaluates image through the neuronetwork and returns what it means
 def eval():
     #reads the image
-    image = cv.imread('test7.PNG')
+    image = cv.imread('personal_testing/test1.PNG')
     #changes image to 28x28
     image = cv.resize(image, dsize = (28,28), interpolation = cv.INTER_CUBIC)
     #convert BGR image to Gray scaled image
@@ -42,7 +42,8 @@ def eval():
         prediction = output.max(1, keepdim=True)[1]
         
         
-        return numbers[str(int(prediction))] + ': ' + '{:.2f}'.format(100*float(probs[0,0])) + '%'
+        return "Prediction: {}".format(output.data.max(1, keepdim=True)[1].item())
+
     
 
 print(eval())

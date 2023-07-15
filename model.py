@@ -5,6 +5,8 @@ import torch.nn.functional as F
 from torch.utils.data import DataLoader
 import torchvision.datasets as datasets
 import torchvision.transforms as transforms
+import matplotlib.pyplot as plt
+
 
 #creates network
 class network(nn.Module):
@@ -12,13 +14,16 @@ class network(nn.Module):
         super(network,self).__init__()
         #This is a 1 layer network
         #input layer has inputSize nodes, first hidden layer has 50 nodes, output layer has outputSize nodes
-        self.fc1 = nn.Linear(inputSize, 50)
-        self.fc2 = nn.Linear(50,outputSize)
+        self.fc1 = nn.Linear(inputSize, 100)
+        self.fc2 = nn.Linear(100,50)
+        self.fc3 = nn.Linear(50,outputSize)
         
     def forward(self, x):
         x = self.fc1(x)
         x = F.relu(x)
         x = self.fc2(x)
+        x = F.relu(x)
+        x = self.fc3(x)
         return x
     
 def run():
@@ -40,6 +45,8 @@ def run():
     testDataset = datasets.MNIST(root='dataset/', train=False, transform=transforms.ToTensor(), download = True)
     testLoader = DataLoader(dataset = testDataset, batch_size = batchSize, shuffle = True)
 
+    
+    
     #Initializing network to device
     model = network(inputSize = inputSize, outputSize = numClasses).to(device)
 
